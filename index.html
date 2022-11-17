@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function getComputerChoice() {
+            let rand = Math.random();
+            if (rand <= 1/3) {
+                return "rock";
+            } else if (rand > 1/3 & rand <= 2/3) {
+                return "paper";
+            } else {
+                return "scissor";
+            }
+        }
+        
+        function singleRound(playerChoice, computerChoice) {
+            playerChoice = playerChoice.toLowerCase();
+            computerChoice = computerChoice.toLowerCase();
+            const tieMsg = `It's a tie! You both chose ${playerChoice}`;
+            const winMsg = `You win! ${playerChoice} beats ${computerChoice}`;
+            const loseMsg = `You lose! ${playerChoice} loses to ${computerChoice}`;
+
+            if (playerChoice === computerChoice) {
+                return [false, false, tieMsg];
+            } 
+            
+            let win;
+            let msg;
+
+            switch(playerChoice) {
+                case "rock":
+                    win = computerChoice === "scissor"
+                    msg = computerChoice === "scissor" ? winMsg : loseMsg
+                    break;
+                case "paper":
+                    win = computerChoice === "rock"
+                    msg = computerChoice === "rock" ? winMsg : loseMsg;
+                    break;
+                case "scissor":
+                    win = computerChoice === "Paper"
+                    msg = computerChoice === "paper" ? winMsg : loseMsg;
+                    break;
+            }
+
+            return [win, !win, msg];
+        }
+
+        function getPlayerChoice() {
+            let keepGoing = true;
+            while (keepGoing) {
+                let userChoice = prompt("Give me a choice of rock, paper or scissor")
+                userChoice = userChoice.toLowerCase();
+                if (!(userChoice !== "rock" & userChoice !== "paper" & userChoice !== "scissor")) {
+                    return userChoice;
+                    keepGoing = false;
+                }
+            }
+        }
+
+        function game() {
+            let yourScore = 0;
+            let computerScore = 0;
+            let gameResult;
+            let msg;
+            for (let i = 0; i < 5; i++) {
+                let playerChoice = getPlayerChoice();
+                gameResult = singleRound(playerChoice, getComputerChoice());
+                if (gameResult[0] === true) yourScore += 1;
+                if (gameResult[1] === true) computerScore += 1;
+                msg = gameResult[2];
+                console.log(`${msg} Your Score is ${yourScore}, Computer Score is ${computerScore}`);
+            }
+        }
+
+        game();
+
+    </script>
+</body>
+</html>
