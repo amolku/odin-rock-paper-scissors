@@ -7,7 +7,23 @@
     <title>Document</title>
 </head>
 <body>
+
+    <button id="rock">ROCK</button>
+    <button id="paper">PAPER</button>
+    <button id="scissor">SCISSOR</button>
+
+    <div id="yourScore">0</div>
+    <div id="cpuScore">0</div>
+    <div id="winOrLose"></div>
+
     <script>
+        let yourScore = 0;
+        let cpuScore = 0;
+
+        const yourScoreDiv = document.getElementById("yourScore");
+        const cpuScoreDiv = document.getElementById("cpuScore");
+        const winOrLose = document.getElementById("winOrLose");
+
         function getComputerChoice() {
             let rand = Math.random();
             if (rand <= 1/3) {
@@ -47,7 +63,7 @@
                     msg = computerChoice === "paper" ? winMsg : loseMsg;
                     break;
             }
-
+            console.log(win);
             return [win, !win, msg];
         }
 
@@ -64,6 +80,10 @@
         }
 
         function game() {
+
+        }
+
+        function consoleGame() {
             let yourScore = 0;
             let computerScore = 0;
             let gameResult;
@@ -78,7 +98,35 @@
             }
         }
 
-        game();
+        //consoleGame();
+
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => button.addEventListener('click', makeChoice))
+
+        function makeChoice(e) {
+            const playerChoice = this.id;
+            let [youWon, cpuWon, msg] = singleRound(this.id, getComputerChoice());
+            console.log(youWon)
+            console.log(cpuWon)
+            console.log(msg)
+            if (youWon) {
+                yourScore += 1;
+                yourScoreDiv.innerText = yourScore;
+            }
+            if (cpuWon) {
+                cpuScore += 1
+                cpuScoreDiv.innerText = cpuScore;
+            }
+            if (yourScore === 3) {
+                winOrLose.innerText = "You won!";
+                buttons.forEach(button => button.removeEventListener('click', makeChoice));
+            } else if (cpuScore === 3) {
+                winOrLose.innerText = "CPU Wins!";
+                buttons.forEach(button => button.removeEventListener('click', makeChoice));
+            } else {
+                winOrLose.innerText = msg;
+            }
+        }
 
     </script>
 </body>
